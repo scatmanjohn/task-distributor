@@ -1,0 +1,4 @@
+mixin alert(style)
+	div( class=["alert", "alert-dismissable", "alert-" + style] )
+		button.close( type="button", data-dismiss="alert" ) ×
+		block
