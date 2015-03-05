@@ -1,0 +1,16 @@
+{
+  "name": "task-distributor",
+  "version": "1.0.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "angular": "~1.2.14",
+    "angular-socket-io": "~0.3.0",
+    "angular-route": "~1.2.14",
+	"bootstrap": "~3.3.2",
+	"jquery": "~2.1.3"
+  }
+}
