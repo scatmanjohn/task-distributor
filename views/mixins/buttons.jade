@@ -12,3 +12,18 @@ mixin button(style, href, size)
  
     a( class=["btn", "btn-" + style, size], href=href )
         block
+        
+        
+mixin buttonng(style, ngclick, size)
+    - var style = (typeof style === 'undefined') ? "default" : style
+    - var ngclick = (typeof ngclick === 'undefined') ? "" : ngclick
+    case size
+        when "large"
+            - size = "btn-lg"
+        when "small"
+            - size = "btn-sm"
+        when "mini"
+            - size = "btn-xs"
+ 
+    button( class=["btn", "btn-" + style, size], ng-click=ngclick )
+        block        

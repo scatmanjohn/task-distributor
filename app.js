@@ -18,13 +18,6 @@ var io = require('socket.io').listen(server);
 /**
  * Configuration
  */
- // Database
-var port = process.env.PORT || 3001;
-var User     = require('./models/User');
- 
-// Connect to DB
-mongoose.connect(process.env.MONGO_URL);
-
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
@@ -46,19 +39,22 @@ if (app.get('env') === 'production') {
 };
 
 /**
- * Models
+ * Database
+ **/
+var port = process.env.PORT || 27017;
+mongoose.connect("mongodb://localhost/task-distributor", port);
+
+/**
+ * Models / Schema
  */
-
-var User = require("./models/users.js");
-User.init(mongoose);
-
+var models = require('./models');
 
 /**
  * Routes
  */
 
 // serve index and view partials
-app.get('/', passport.authenticate('basic', { session: false }), routes.index);
+app.get('/', routes.index);
 app.get('/partials/:name', routes.partials);
 
 // JSON API
@@ -68,7 +64,7 @@ app.get('/api/name', api.name);
 app.get('*', routes.index);
 
 // Socket.io Communication
-io.sockets.on('connection', require('./routes/socket', './routes/sockets/user'));
+io.sockets.on('connection', require('./routes/socket'));
 
 /**
  * Start Server

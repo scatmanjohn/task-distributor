@@ -1,4 +1,9 @@
 mixin alert(style)
 	div( class=["alert", "alert-dismissable", "alert-" + style] )
-		button.close( type="button", data-dismiss="alert" ) �
+		button.close( type="button", data-dismiss="alert" ) ×
 		block
+		
+mixin announce()
+	div( ng-repeat="announce in announces", class=["alert", "alert-{{ announce.type }}", "announce-{{ announce._id }}"], ng-if="announce.open == true" )
+		button.close( type="button", ng-click="closeAnnounce(announce._id)" ) ×
+		| {{ announce.message }}		

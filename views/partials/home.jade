@@ -1,1 +1,26 @@
-p Hello !!
+include ../mixins/buttons
+include ../mixins/modal
+include ../mixins/forms
+
++buttonng("success", "addUser()") Add user
++modalFormButton("new_user") New user
++modalForm("new_user", "New user")
+  +form("newuser")
+    +formText("username", "Username", "")(placeholder="Username", required)
+    
+
+div(ng-if="users.length > 0")
+  table(class="table table-bordered")
+    tr
+      th Username
+      th Lastname
+      th Firstname
+      th Actions
+    tr(ng-repeat="u in users")
+      td {{ u.username }}
+      td {{ u.name.last }}
+      td {{ u.name.first }}
+      td 
+        button(ng-click="removeUser(u._id)", class=["btn", "btn-danger", "btn-xs"]) Remove
+p
+  button(ng-click="refreshUserList()") Refresh

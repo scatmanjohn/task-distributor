@@ -2,12 +2,16 @@
 
 // Declare app level module which depends on filters, and services
 
-angular.module('myApp', [
+angular.module('TaskDistributorApp', [
   'ngRoute',
-  'myApp.controllers',
-  'myApp.filters',
-  'myApp.services',
-  'myApp.directives',
+    
+    
+  'TaskDistributorApp.MainControllers',
+  'TaskDistributorApp.HomeControllers',
+    
+  'TaskDistributorApp.filters',
+  'TaskDistributorApp.services',
+  'TaskDistributorApp.directives',
 
   // 3rd party dependencies
   'btford.socket-io'
@@ -24,7 +28,7 @@ config(function ($routeProvider, $locationProvider) {
     }).
 	when('/home', {
 		templateUrl: 'partials/home',
-		controller: 'HomeCtrl'
+		controller: 'HomeController'
 	}).
     otherwise({
       redirectTo: '/view1'

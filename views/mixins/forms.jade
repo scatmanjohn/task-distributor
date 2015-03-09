@@ -1,0 +1,16 @@
+- var form_name=""
+
+mixin form(name, onsubmit)
+  - form_name = name;
+  form(name=name, ng-submit=onsubmit, class="form-horizontal")
+    block
+  
+mixin formText(id, label, model)
+  div(for=id, class="form-group", ng-class="{ 'has-error': isValid('" + model + "') }")
+    label(class=["col-sm-3", "control-label"])=label
+    div.col-sm-9
+      if model
+        input.form-control(type="text", name=id, id=id, ng-model=model, placeholder!=attributes.placeholder, required!=attributes.required)
+      else 
+        input.form-control(type="text", name=id, id=id, placeholder!=attributes.placeholder, required!=attributes.required)
+      

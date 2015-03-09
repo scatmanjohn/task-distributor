@@ -1,0 +1,18 @@
+mixin modalForm(id, title)
+  div(class=["modal", "fade"], id=id, tabindex="-1", role="dialog", aria-labelledby=id+"Label", aria-hidden="true")
+    div(class=["modal-dialog"])
+      div(class=["modal-content"])
+        div(class=["modal-header"])
+          button(class=["close"], data-dismiss="modal", aria-label="Close")
+            span(aria-hidden='true') &times;
+          h4(class=["modal-title"], id=id+"Label")= title
+        div(class=["modal-body"])
+          block
+        div(class=["modal-footer"])
+          button(class=["btn", "btn-default"], data-dismiss="modal") Cancel
+          button(class=["btn", "btn-success"]) Save
+  
+          
+mixin modalFormButton(id, onclick)
+  button(class=["btn", "btn-primary"], data-toggle="modal", data-target="#" + id, ng-click=onclick) 
+    block

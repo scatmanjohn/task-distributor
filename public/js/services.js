@@ -5,7 +5,7 @@
 
 // Demonstrate how to register services
 // In this case it is a simple value service.
-angular.module('myApp.services', []).
+angular.module('TaskDistributorApp.services', []).
   factory('socket', function (socketFactory) {
     return socketFactory();
   }).

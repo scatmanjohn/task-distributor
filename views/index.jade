@@ -1,6 +1,4 @@
-include mixins/task
 include mixins/navbar
-include mixins/buttons
 include mixins/alert
 extends layout
 
@@ -10,20 +8,24 @@ block body
       +nav_item("home", "active") Home
       +nav_item("view1") View1
       +nav_item("view2") View2
+      
+    +announce
     div(ng-view)
 
     div
-      | Angular Socket.io seed app: v
+      | Task-distributor seed app: v
+      | lol
       span(app-version)
 
   script(src='/socket.io/socket.io.js')
   script(src='bower_components/angular/angular.js')
   script(src='bower_components/angular-route/angular-route.js')
   script(src='bower_components/angular-socket-io/socket.js')
-  script( src='/bower_components/jquery/dist/jquery.min.js' )
-  script( src='/bower_components/bootstrap/dist/js/bootstrap.min.js' )
+  script(src='bower_components/jquery/dist/jquery.min.js' )
+  script(src='bower_components/bootstrap/dist/js/bootstrap.min.js' )
   script(src='js/app.js')
   script(src='js/services.js')
-  script(src='js/controllers.js')
+  script(src='js/controllers/HomeController.js')
+  script(src='js/controllers/MainController.js')
   script(src='js/filters.js')
   script(src='js/directives.js')

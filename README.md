@@ -1,6 +1,6 @@
 # Task-distributor
 
-Task-distributor is a flexible web app using NodeJS (express) and AngularJS.
+Task-distributor is a flexible web app using NodeJS (express), AngularJS and MongoDB.
 Its goal is to help management and follow-up of multiple tasks of multiple projects.
 
 ## How to use it
