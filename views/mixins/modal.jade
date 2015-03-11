@@ -1,5 +1,5 @@
 mixin modalForm(id, title, action)
-  div(class=["modal", "fade"], id=id, tabindex="-1", role="dialog", aria-labelledby=id+"Label", aria-hidden="true")
+  div(class=["modal", "fade"], id="dialog-" + id, tabindex="-1", role="dialog", aria-labelledby=id+"Label", aria-hidden="true")
     div(class=["modal-dialog"])
       div(class=["modal-content"])
         div(class=["modal-header"])
@@ -18,6 +18,9 @@ mixin modalForm(id, title, action)
           button(class=["btn", "btn-warning"], ng-click="#{ id } = null && forms.#{ id }.$setPristine()") Clear
   
           
-mixin modalFormButton(id, onclick)
-  button(class=["btn", "btn-primary"], data-toggle="modal", data-target="#" + id, ng-click=onclick) 
-    block
+mixin modalFormButton(id, icon)
+  button(class=["btn", "btn-primary"], data-toggle="modal", data-target="#dialog-" + id, attributes)
+   if(typeof(icon) != "undefined")
+    i(class=["glyphicon", "glyphicon-" + icon])
+    &nbsp;
+   block

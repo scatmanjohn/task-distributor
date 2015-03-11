@@ -2,9 +2,10 @@ mixin alert(style)
    div( class=["alert", "alert-dismissable", "alert-" + style] )
      button.close( type="button", data-dismiss="alert" ) ×
      block
-     
+
 mixin announce()
-  div.announces
-    div( ng-repeat="announce in announces", class=["alert", "alert-{{ announce.type }}", "announce-{{ announce._id }}, announce"], ng-if="announce.open == true" )
-      button.close( type="button", ng-click="closeAnnounce(announce._id)" ) ×
-        | {{ announce.message }}		
+  div#toast-container(class="toast-top-right", role="alert", aria-live="polite", ng-if="announces.length > 0")
+    div(ng-repeat="announce in announces", class=["toast", "toast-{{ announce.type }}", "announce-{{ announce._id }}"], ng-if="announce.open == true", ng-click="announce.open = false" )
+      div.toast-title {{ announce.title }}
+      div.toast-message
+        | {{ announce.message }}

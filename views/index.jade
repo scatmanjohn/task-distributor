@@ -4,7 +4,7 @@ extends layout
 
 block body
   div(ng-controller='AppCtrl')
-    +announce
+    +announce  
     +nav('{{ appName }}', "dropdown_menu")
       +nav_item("home", "active") Home
       +nav_item("view1") View1
@@ -23,6 +23,8 @@ block body
   script(src='bower_components/angular-socket-io/socket.js')
   script(src='bower_components/jquery/dist/jquery.min.js' )
   script(src='bower_components/bootstrap/dist/js/bootstrap.min.js' )
+  script(src='bower_components/angular-xeditable/dist/js/xeditable.js' )
+  script(src='js/others/loading-overlay.js' )
   script(src='js/app.js')
   script(src='js/services.js')
   script(src='js/controllers/HomeController.js')

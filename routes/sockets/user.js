@@ -19,24 +19,17 @@ module.exports = function (socket) {
     /**
      *  Send a message with success status of the add user request
      */
-    $self.sendCreatedUserMessage = function(success, user, message){
-        socket.emit('send:user:created', {
+    $self.sendResult = function(action, success, user, message){
+        socket.emit('send:user:' + action, {
             success:success,
             user:user,
             message:message
         });
+        
+        // Send broadcast in order to warn other users if success = true
+        socket.broadcast.emit("send:something-changed-user");
     };
     
-    /**
-     *  Send a message with success status of the remove user request
-     */
-    $self.sendRemovedUserMessage = function(success, user, message){
-        socket.emit('send:user:removed', {
-            success:success,
-            user:user,
-            message:message
-        });
-    };
     
     /**
       * Send all users
@@ -68,29 +61,51 @@ module.exports = function (socket) {
     socket.on('get:user:new', function(data){
         // User instance
         var u = new models.User(data.user);
-
         // Save
         u.save(function (err, u) {
             if (err)
-                $self.sendCreatedUserMessage(false, u, err);
+                $self.sendResult("created", false, u, err);
             else  
-               $self.sendCreatedUserMessage(true, u, "User saved");
+               $self.sendResult("created", true, u, "User saved");
         });
     });
 
     /**
-      *  Ask for remove a new user
+      *  Ask for remove an user
       */
     socket.on('get:user:remove', function(data){
         if(!data || !data.id) return false;
         var users = models.User.findOne(data.id);
         users.exec(function (err, user) {
-            if (err) $self.sendRemovedUserMessage(false, user, "An error occured");  //return handleError(err);
+            if (err) $self.sendResult("removed", false, user, "An error occured");  //return handleError(err);
             else if(user) {
                 user.remove();  // Remove user
-                $self.sendRemovedUserMessage (true, user, "User has been removed");
+                $self.sendResult("removed", true, user, "User has been removed");
             }
         });
     });
+    
+    /**
+      *  Ask for user field saving
+      */
+    socket.on('get:user:fieldsave', function(data){
+       models.User.findById(data.id, function(err, u){
+           if(err)
+               $self.sendResult("fieldsaved", false, u, err);
+           else if(!u)
+               $self.sendResult("fieldsaved", false, u, "User not found");
+           else // UPDATE field
+           {
+               u[data.field] = data.data;
+               u.save(function(err){
+                   if(err)
+                       $self.sendResult("fieldsaved", false, u, err);
+                   else $self.sendResult("fieldsaved", true, u, err);
+               });
+                
+           }
+       });
+    });
+  
   
 };

@@ -23,14 +23,24 @@ angular.module('TaskDistributorApp.HomeControllers', []).
     });	
     
     /**
+     *      Receive an alert about someone changing users
+     */
+	socket.on('send:something-changed-user', function (data) {
+        if(!data) data = {action:"unknow"};
+        $scope.openAnnounce("Hey!", "Someone did something about users:" + data.action);
+    });
+    
+    /**
 	 *		Receive removed user response
 	 */
     socket.on('send:user:removed', function (data) {
-        if(data && data.success)
-        {
-            $scope.openAnnounce("User {0} has been removed".format(data.user.username), "success");
-            $scope.refreshUserList();
-        } else $scope.openAnnounce(data.message, "danger");
+        $scope.successOrError(data, function(success, errors){
+            $scope.setOverlay($("#dialog-new_user .modal-content"), false);
+            if(success)
+            {
+                $scope.refreshUserList();
+            }
+        }, "User has been removed", "User has not been removed" );
     });    
     
     
@@ -38,11 +48,27 @@ angular.module('TaskDistributorApp.HomeControllers', []).
 	 *		Receive added user response
 	 */
     socket.on('send:user:created', function (data) {
-        if(data && data.success)
-        {
-            $scope.openAnnounce(data.message, "success");
-            $scope.refreshUserList();
-        } else $scope.openAnnounce(data.message, "danger");
+        $scope.successOrError(data, function(success, errors){
+            $scope.setOverlay($("#dialog-new_user .modal-content"), false);
+            if(success)
+            {
+                $scope.refreshUserList(); 
+            }
+        }, "User saved", "User not saved" );
+    });
+	
+    
+    /**
+	 *		Receive added user response
+	 */
+    socket.on('send:user:fieldsaved', function (data) {
+        $scope.successOrError(data, function(success, errors){
+            $scope.setOverlay($("#dialog-new_user .modal-content"), false);
+            if(!success)
+            {
+                $scope.refreshUserList(); 
+            }
+        }, "User saved", "User not saved" );
     });
 	
 
@@ -65,25 +91,35 @@ angular.module('TaskDistributorApp.HomeControllers', []).
     /**
       * New user
       */
+    $scope.new_user = {};
     $scope.createUserAction = function(){
-        if($scope.forms.new_user && $scope.forms.new_user.$valid)
+        if($scope.forms.new_user && $scope.forms.new_user.$valid && $scope.new_user)
         {
+            $scope.setOverlay($("#dialog-new_user .modal-content"), true);
             var user =  {
                 name:{
-                    last: new_user.lastname,
-                    first: new_user.firstname
+                    last: $scope.new_user.lastname,
+                    first: $scope.new_user.firstname
                 },
-                username: new_user.username,
+                username: $scope.new_user.username,
                 password: "password"
             };
-            
             socket.emit("get:user:new", { user:user } );
-            
-            $("#new_user").modal('hide');    
         } else { 
             $("#new_user").modal('hide');
             $scope.openAnnounce("An error occured. Unable to submit the form.", "warning");
         }
+    };
+    
+    /** 
+     *  Edit user
+     */
+    $scope.fieldSaveUserAction = function(data, _id, field){
+        socket.emit("get:user:fieldsave", { 
+            data:data,
+            id:_id,
+            field:field
+        } );
     };
     
     // Init user loadind

@@ -4,7 +4,7 @@ mixin form(name, onsubmit)
   - form_name = name;
   div.error(ng-if="!forms.#{ name }.$valid")
     p There is errors in the form
-  form(name="forms." + name, id=name, ng-submit=onsubmit, class="form-horizontal")
+  form(name="forms." + name, id="forms." + name, ng-submit=onsubmit, class="form-horizontal")
     block
   
 mixin formText(id, label)

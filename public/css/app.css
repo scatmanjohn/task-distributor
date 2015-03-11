@@ -29,11 +29,17 @@
   padding: 0;
 }
 
+.editable, .editable-click, a.editable-click {
+    text-decoration: inherit;
+    color:inherit;
+    border-bottom: inherit;
+    cursor:pointer;
+    border:none;
+}
 
-.announces
-{
-    position:absolute;
-    top:0px;
-    height:1000px;
-    overflow: visible;
+.editable:hover, .editable-clic:hover, a.editable-click:hover {
+    text-decoration: inherit;
+    color:inherit;
+    border-bottom: inherit;
+    cursor:pointer;
 }

@@ -27,3 +27,15 @@ mixin buttonng(style, ngclick, size)
  
     button( class=["btn", "btn-" + style, size], ng-click=ngclick )
         block        
+        
+mixin buttonRemove(fn, message, size)
+    - var message = (typeof message === 'undefined' || message == "" || message == false) ? "Are you sure?" : message
+    case size
+      when "large"
+         - size = "btn-lg"
+      when "small"
+         - size = "btn-sm"
+      when "mini"
+        - size = "btn-xs"
+    button( class=["btn", "btn-warning", size], ng-really-click=fn, ng-really-message=message )
+      block
