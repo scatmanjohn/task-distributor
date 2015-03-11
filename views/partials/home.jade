@@ -2,12 +2,11 @@ include ../mixins/buttons
 include ../mixins/modal
 include ../mixins/forms
 
-+buttonng("success", "addUser()") Add user
 +modalFormButton("new_user") New user
-+modalForm("new_user", "New user")
-  +form("newuser")
-    +formText("username", "Username", "")(placeholder="Username", required)
-    
++modalForm("new_user", "New user", "createUserAction()")
+  +formText("username", "Username")(placeholder="Username", required, maxlength=10)
+  +formText("lastname", "Lastname")(placeholder="Lastname", required)
+  +formText("firstname", "Firstname")(placeholder="Firstname", required, minlength = 5)
 
 div(ng-if="users.length > 0")
   table(class="table table-bordered")
@@ -18,8 +17,8 @@ div(ng-if="users.length > 0")
       th Actions
     tr(ng-repeat="u in users")
       td {{ u.username }}
-      td {{ u.name.last }}
-      td {{ u.name.first }}
+      td {{ u.last }}
+      td {{ u.first }}
       td 
         button(ng-click="removeUser(u._id)", class=["btn", "btn-danger", "btn-xs"]) Remove
 p

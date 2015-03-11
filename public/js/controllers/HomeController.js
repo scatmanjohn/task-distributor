@@ -37,7 +37,7 @@ angular.module('TaskDistributorApp.HomeControllers', []).
     /**
 	 *		Receive added user response
 	 */
-    socket.on('send:user:added', function (data) {
+    socket.on('send:user:created', function (data) {
         if(data && data.success)
         {
             $scope.openAnnounce(data.message, "success");
@@ -61,43 +61,30 @@ angular.module('TaskDistributorApp.HomeControllers', []).
 	$scope.removeUser = function(id){
 		socket.emit('get:user:remove', { id:id });
 	};
-    
+
     /**
-      * User form
+      * New user
       */
-    $scope.user = {};
-    $scope.user = function(){
-        $scope.user = {
-            name:{
-                last:"",
-                first:""
-            },
-            username:"",
-            password:""
-        };
-    };
-    
-    $scope.isValid = function(model)
-    {
-        if(!model) return false;
-        try {var value = eval("$scope." + model); } catch(e){ };
-        if(typeof(value) == "undefined") return false;
-        
-        if(model == "user.username")
+    $scope.createUserAction = function(){
+        if($scope.forms.new_user && $scope.forms.new_user.$valid)
         {
-            if( value.length ) return true;  
+            var user =  {
+                name:{
+                    last: new_user.lastname,
+                    first: new_user.firstname
+                },
+                username: new_user.username,
+                password: "password"
+            };
+            
+            socket.emit("get:user:new", { user:user } );
+            
+            $("#new_user").modal('hide');    
+        } else { 
+            $("#new_user").modal('hide');
+            $scope.openAnnounce("An error occured. Unable to submit the form.", "warning");
         }
-        
-        return false;
-    }
-    
-    
-    /** 	
-      * Create user
-      **/
-	$scope.addUser = function(){
-		socket.emit('get:user:add', { user:$scope.new_user });
-	};
+    };
     
     // Init user loadind
     $scope.refreshUserList();	

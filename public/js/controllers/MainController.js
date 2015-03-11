@@ -8,6 +8,8 @@ angular.module('TaskDistributorApp.MainControllers', []).
       $scope.appName = data.appName;
     });
     
+    // Forms
+    $scope.forms = {};
     
     // Alerts management
     $scope.announces = [];
@@ -39,7 +41,6 @@ angular.module('TaskDistributorApp.MainControllers', []).
     }
     
     $scope.closeAnnounce = function(id){
-        console.log($scope.announces);
         if( $scope.announces[id])
         {
             $scope.announces[id].open = false;

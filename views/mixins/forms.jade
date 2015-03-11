@@ -2,15 +2,18 @@
 
 mixin form(name, onsubmit)
   - form_name = name;
-  form(name=name, ng-submit=onsubmit, class="form-horizontal")
+  div.error(ng-if="!forms.#{ name }.$valid")
+    p There is errors in the form
+  form(name="forms." + name, id=name, ng-submit=onsubmit, class="form-horizontal")
     block
   
-mixin formText(id, label, model)
-  div(for=id, class="form-group", ng-class="{ 'has-error': isValid('" + model + "') }")
+mixin formText(id, label)
+  div(for=id, class="form-group", ng-class="{ 'has-error':  (forms.#{ form_name }.#{id}.$dirty && !forms.#{ form_name }.#{id}.$valid) }")
     label(class=["col-sm-3", "control-label"])=label
     div.col-sm-9
-      if model
-        input.form-control(type="text", name=id, id=id, ng-model=model, placeholder!=attributes.placeholder, required!=attributes.required)
-      else 
-        input.form-control(type="text", name=id, id=id, placeholder!=attributes.placeholder, required!=attributes.required)
-      
+      input.form-control(type="text", name=id, id=id, ng-model=form_name + "." + id, placeholder!=attributes.placeholder, required!=attributes.required, ng-minlength!=attributes.minlength, ng-maxlength!=attributes.maxlength, ng-pattern!=attributes.pattern)
+        
+mixin formSubmitButton(label)
+  if(typeof(label) == "undefined") 
+    label = "Submit"
+  button(class=["btn", "btn-success"], type="submit")= label

@@ -28,3 +28,12 @@
   content: "";
   padding: 0;
 }
+
+
+.announces
+{
+    position:absolute;
+    top:0px;
+    height:1000px;
+    overflow: visible;
+}

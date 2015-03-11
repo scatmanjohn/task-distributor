@@ -1,4 +1,4 @@
-mixin modalForm(id, title)
+mixin modalForm(id, title, action)
   div(class=["modal", "fade"], id=id, tabindex="-1", role="dialog", aria-labelledby=id+"Label", aria-hidden="true")
     div(class=["modal-dialog"])
       div(class=["modal-content"])
@@ -7,10 +7,15 @@ mixin modalForm(id, title)
             span(aria-hidden='true') &times;
           h4(class=["modal-title"], id=id+"Label")= title
         div(class=["modal-body"])
-          block
+          +form(id, action)
+            block
         div(class=["modal-footer"])
+          if(typeof(action) == "undefined")
+            button(class=["btn", "btn-success"], ng-if="forms.#{ id }.$valid") Save
+          else 
+            button(class=["btn", "btn-success"], ng-click=action, ng-if="forms.#{ id }.$valid") Save
           button(class=["btn", "btn-default"], data-dismiss="modal") Cancel
-          button(class=["btn", "btn-success"]) Save
+          button(class=["btn", "btn-warning"], ng-click="#{ id } = null && forms.#{ id }.$setPristine()") Clear
   
           
 mixin modalFormButton(id, onclick)

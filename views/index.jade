@@ -4,12 +4,12 @@ extends layout
 
 block body
   div(ng-controller='AppCtrl')
+    +announce
     +nav('{{ appName }}', "dropdown_menu")
       +nav_item("home", "active") Home
       +nav_item("view1") View1
       +nav_item("view2") View2
       
-    +announce
     div(ng-view)
 
     div

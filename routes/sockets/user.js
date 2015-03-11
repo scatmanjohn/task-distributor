@@ -19,8 +19,8 @@ module.exports = function (socket) {
     /**
      *  Send a message with success status of the add user request
      */
-    $self.sendAddedUserMessage = function(success, user, message){
-        socket.emit('send:user:added', {
+    $self.sendCreatedUserMessage = function(success, user, message){
+        socket.emit('send:user:created', {
             success:success,
             user:user,
             message:message
@@ -65,24 +65,16 @@ module.exports = function (socket) {
     /**
       *  Ask for adding new user
       */
-    socket.on('get:user:add', function(){
-        console.log("?");
+    socket.on('get:user:new', function(data){
         // User instance
-        var u = new models.User({
-                name: {
-                    first: "Jean",
-                    last: "Scatman "
-                },
-                username: "john.scatman",
-                password: "pass"
-        });
+        var u = new models.User(data.user);
 
         // Save
         u.save(function (err, u) {
             if (err)
-                $self.sendAddedUserMessage(false, u, err);
+                $self.sendCreatedUserMessage(false, u, err);
             else  
-               $self.sendAddedUserMessage(true, u, "User saved");
+               $self.sendCreatedUserMessage(true, u, "User saved");
         });
     });
 
