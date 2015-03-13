@@ -19,7 +19,7 @@ module.exports = function (socket) {
     /**
      *  Send a message with success status of the add user request
      */
-    $self.sendResult = function(action, success, user, message){
+    $self.sendResult = function(socket, action, success, user, message){
         socket.emit('send:user:' + action, {
             success:success,
             user:user,
@@ -27,14 +27,15 @@ module.exports = function (socket) {
         });
         
         // Send broadcast in order to warn other users if success = true
-        socket.broadcast.emit("send:something-changed-user");
+        if(success)
+            socket.broadcast.emit("send:something-changed-user", { action:action });
     };
     
     
     /**
       * Send all users
       */
-    $self.sendUsersList = function(){
+    $self.sendUsersList = function(socket){
         var users = models.User.find();
         users.exec(function (err, users) {
             if (err) return handleError(err);
@@ -51,7 +52,7 @@ module.exports = function (socket) {
       *  Ask for user list
       */
     socket.on('get:user:list', function(){
-        $self.sendUsersList();
+        $self.sendUsersList(socket);
     });
   
   
@@ -64,9 +65,9 @@ module.exports = function (socket) {
         // Save
         u.save(function (err, u) {
             if (err)
-                $self.sendResult("created", false, u, err);
+                $self.sendResult(socket, "created", false, u, err);
             else  
-               $self.sendResult("created", true, u, "User saved");
+               $self.sendResult(socket, "created", true, u, "User saved");
         });
     });
 
@@ -77,10 +78,10 @@ module.exports = function (socket) {
         if(!data || !data.id) return false;
         var users = models.User.findOne(data.id);
         users.exec(function (err, user) {
-            if (err) $self.sendResult("removed", false, user, "An error occured");  //return handleError(err);
+            if (err) $self.sendResult(socket, "removed", false, user, "An error occured");  //return handleError(err);
             else if(user) {
                 user.remove();  // Remove user
-                $self.sendResult("removed", true, user, "User has been removed");
+                $self.sendResult(socket, "removed", true, user, "User has been removed");
             }
         });
     });
@@ -91,16 +92,16 @@ module.exports = function (socket) {
     socket.on('get:user:fieldsave', function(data){
        models.User.findById(data.id, function(err, u){
            if(err)
-               $self.sendResult("fieldsaved", false, u, err);
+               $self.sendResult(socket, "fieldsaved", false, u, err);
            else if(!u)
-               $self.sendResult("fieldsaved", false, u, "User not found");
+               $self.sendResult(socket, "fieldsaved", false, u, "User not found");
            else // UPDATE field
            {
                u[data.field] = data.data;
                u.save(function(err){
                    if(err)
-                       $self.sendResult("fieldsaved", false, u, err);
-                   else $self.sendResult("fieldsaved", true, u, err);
+                       $self.sendResult(socket, "fieldsaved", false, u, err);
+                   else $self.sendResult(socket, "fieldsaved", true, u, err);
                });
                 
            }

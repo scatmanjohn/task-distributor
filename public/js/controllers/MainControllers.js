@@ -3,10 +3,25 @@
 /* Controllers */
 
 angular.module('TaskDistributorApp.MainControllers', []).
-  controller('AppCtrl', function ($scope, $timeout, socket) {
+    controller("HomeController", function($scope, socket) {
+    
+        
+
+    })
+
+
+  .controller('AppCtrl', function ($scope, $timeout, $location, socket) {
     socket.on('send:appName', function (data) {
       $scope.appName = data.appName;
     });
+    
+    $scope.getMenuClass = function(path)
+    {
+        if($location.path().substr(0, path.length) == path)
+            return "active";
+        else
+            return "";
+    }
     
     $scope.setOverlay = function(element, value)
     {
@@ -58,12 +73,12 @@ angular.module('TaskDistributorApp.MainControllers', []).
         }
     }
     
-    $scope.openAnnounce = function(title, message, type){
-        if(! /warning|error|success/i.test(type))
-            type = "warning";   
+    $scope.openAnnounce = function(title, message, type, fnonclick){
+        if(! /warning|info|error|success/i.test(type))
+            type = "info";   
         
         var id = $scope.announces.length;
-        $scope.announces[id] = {_id: id, open:true, message:message, title:title, type:type };
+        $scope.announces[id] = {_id: id, open:true, message:message, title:title, type:type, fnonclick:fnonclick };
         
         // Timeout to close automatically the alert
         $timeout(function(){
@@ -84,23 +99,17 @@ angular.module('TaskDistributorApp.MainControllers', []).
         }, 1000);
     }
     
-    $scope.closeAnnounce = function(id){
+    $scope.closeAnnounce = function(id, clicked){
         if( $scope.announces[id])
         {
+            if(clicked && $scope.announces[id].fnonclick)
+                $scope.announces[id].fnonclick();
             $scope.announces[id].open = false;
             //$scope.announces.splice(id, 1);
         }
     }
     
     
-  }).
-  controller('MyCtrl1', function ($scope, socket) {
-    socket.on('send:time', function (data) {
-      $scope.time = data.time;
-    });
-  }).
-  controller('MyCtrl2', function ($scope) {
-    // write Ctrl here
   });
 
 

@@ -1,26 +1,5 @@
-include ../mixins/buttons
-include ../mixins/modal
-include ../mixins/forms
+h3
+  | Home
 
-+modalFormButton("new_user", "user") New user
-+modalForm("new_user", "New user", "createUserAction()")
-  +formText("username", "Username")(placeholder="Username", required, maxlength=10)
-  +formText("lastname", "Lastname")(placeholder="Lastname", required)
-  +formText("firstname", "Firstname")(placeholder="Firstname", required, minlength = 5)
-
-div(ng-if="users.length > 0")
-  table(class="table table-bordered")
-    tr
-      th.col-xs-3 Username
-      th.col-xs-4 Lastname
-      th.col-xs-3 Firstname
-      th.col-xs-2 Actions
-    tr(ng-repeat="u in users")
-      td 
-        span(editable-text="u.username", onbeforesave="fieldSaveUserAction($data, u._id, 'username')"){{ u.username }}
-      td {{ u.name.last }}
-      td {{ u.name.first }}
-      td 
-         button( class=["btn-xs"], ng-confirm-it="removeUser(u._id)", ng-really-message="Are you sure?" ) Remove
 p
-  button(ng-click="refreshUserList()") Refresh
+  | Welcome !

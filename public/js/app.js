@@ -7,7 +7,7 @@ var app = angular.module('TaskDistributorApp', [
   'xeditable',    
     
   'TaskDistributorApp.MainControllers',
-  'TaskDistributorApp.HomeControllers',
+  'TaskDistributorApp.AdminControllers',
     
   'TaskDistributorApp.filters',
   'TaskDistributorApp.services',
@@ -26,12 +26,16 @@ config(function ($routeProvider, $locationProvider) {
       templateUrl: 'partials/partial2',
       controller: 'MyCtrl2'
     }).
-	when('/home', {
+	when('/users', {
+		templateUrl: 'partials/users',
+		controller: 'UserController'
+	}).
+  	when('/home', {
 		templateUrl: 'partials/home',
 		controller: 'HomeController'
 	}).
     otherwise({
-      redirectTo: '/view1'
+      redirectTo: '/home'
     });
 
   $locationProvider.html5Mode(true);

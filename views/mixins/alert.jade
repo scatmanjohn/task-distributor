@@ -5,7 +5,7 @@ mixin alert(style)
 
 mixin announce()
   div#toast-container(class="toast-top-right", role="alert", aria-live="polite", ng-if="announces.length > 0")
-    div(ng-repeat="announce in announces", class=["toast", "toast-{{ announce.type }}", "announce-{{ announce._id }}"], ng-if="announce.open == true", ng-click="announce.open = false" )
+    div(ng-repeat="announce in announces", class=["toast", "toast-{{ announce.type }}", "announce-{{ announce._id }}"], ng-if="announce.open == true", ng-click="closeAnnounce(announce._id, true)")
       div.toast-title {{ announce.title }}
       div.toast-message
         | {{ announce.message }}

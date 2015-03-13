@@ -2,12 +2,11 @@
 
 /* Controllers */
 
-angular.module('TaskDistributorApp.HomeControllers', []).
-  controller('HomeController', function ($scope, socket) {
+angular.module('TaskDistributorApp.AdminControllers', []).
+  controller('UserController', function ($scope, socket) {
   	$scope.users = [];
 	
-	////////////////////// EVENTS /////////////////////
-	
+	////////////////////// EVENTS /////////////////////	
 	/**
 	 *		Reveive current user data
 	 */
@@ -27,7 +26,9 @@ angular.module('TaskDistributorApp.HomeControllers', []).
      */
 	socket.on('send:something-changed-user', function (data) {
         if(!data) data = {action:"unknow"};
-        $scope.openAnnounce("Hey!", "Someone did something about users:" + data.action);
+        $scope.openAnnounce("Users updated", "Users has been updated ("+ data.action +". Click here to refresh.", "info", function(){
+            $scope.refreshUserList();
+        });
     });
     
     /**

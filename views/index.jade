@@ -1,20 +1,22 @@
 include mixins/navbar
 include mixins/alert
+include mixins/loader
 extends layout
 
 block body
-  div(ng-controller='AppCtrl')
+
+  div(ng-show="false") 
+    Loading ...
+  div(ng-controller='AppCtrl', ng-cloak, class="ng-cloak")
     +announce  
     +nav('{{ appName }}', "dropdown_menu")
-      +nav_item("home", "active") Home
-      +nav_item("view1") View1
-      +nav_item("view2") View2
-      
-    div(ng-view)
+      +nav_item("/home") Home
+      +nav_item("/users") Users
 
+    div(ng-view, ng-cloak, class="ng-cloak")
+    +loader()
     div
       | Task-distributor seed app: v
-      | lol
       span(app-version)
 
   script(src='/socket.io/socket.io.js')
@@ -27,7 +29,7 @@ block body
   script(src='js/others/loading-overlay.js' )
   script(src='js/app.js')
   script(src='js/services.js')
-  script(src='js/controllers/HomeController.js')
-  script(src='js/controllers/MainController.js')
+  script(src='js/controllers/MainControllers.js')
+  script(src='js/controllers/AdminControllers.js')  
   script(src='js/filters.js')
   script(src='js/directives.js')
